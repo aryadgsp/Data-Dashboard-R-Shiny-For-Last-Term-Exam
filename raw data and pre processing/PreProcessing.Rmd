@@ -1,0 +1,108 @@
+---
+title: "Data Pre Processing"
+author: "Kelompok G"
+date: "2022-12-06"
+output: html_document
+---
+
+```{r}
+data <- read.csv("AnalisisECommerce.csv")
+data
+```
+
+```{r}
+as.data.frame(colSums(is.na(data)))
+```
+
+```{r}
+summary(data)
+```
+
+```{r}
+library(mice)
+md.pattern(data, plot = TRUE, rotate.names = TRUE)
+```
+
+```{r}
+colnames(data)
+```
+
+```{r}
+data2
+```
+
+```{r}
+model <- glm(Konsumtif~E.Commerce+Waktu+Wishlist+Internet+Pemasukan+Pengeluaran+beli_berdasarkan_keinginan+beli_untuk_pujian+beli_tanpa_pertimbangkan_uang, data = data, family = binomial)
+
+model
+```
+
+```{r}
+cooksD <- cooks.distance(model)
+```
+
+```{r}
+n <- nrow(data)
+plot(cooksD, main = "Cooks Distance for Influential Obs")
+abline(h = 4/n, lty = 2, col = "steelblue")
+```
+
+```{r}
+plot(model, which = 5)
+```
+
+```{r}
+#identify influential points
+influential_obs <- as.numeric(names(cooksD)[(cooksD > (4/n))])
+
+#define new data frame with influential points removed
+cleandata <- data[-influential_obs, ]
+```
+
+```{r}
+cleandata
+```
+
+```{r}
+# detect outlier function
+detect_outlier <- function(x) {
+  
+  # calculate first quantile
+  Quantile1 <- quantile(x, probs=.25)
+  
+  # calculate third quantile
+  Quantile3 <- quantile(x, probs=.75)
+  
+  # calculate inter quartile range
+  IQR = Quantile3-Quantile1
+  
+  # return true or false
+  x > Quantile3 + (IQR*1.5) | x < Quantile1 - (IQR*1.5)
+}
+
+# create remove outlier function
+remove_outlier <- function(dataframe, columns=names(dataframe)) {
+   
+    # for loop to traverse in columns vector
+    for (col in columns) {
+       
+        # remove observation if it satisfies outlier function
+        dataframe <- dataframe[!detect_outlier(dataframe[[col]]), ]
+    }
+   
+    # return dataframe
+    return(dataframe)
+}
+
+data2 <- remove_outlier(cleandata, c("Waktu", "Wishlist", "Internet", "Pemasukan", "Pengeluaran"))
+```
+
+```{r}
+data2
+```
+
+```{r}
+write.csv(data2,file='dataecom.csv',row.names = FALSE)
+```
+
+
