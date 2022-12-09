@@ -5,9 +5,10 @@ account: aryadgsp
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7855215
-bundleId: 6614938
+bundleId: 6615045
 url: https://aryadgsp.shinyapps.io/uaskelompokg/
-when: 1670577839.19732
-lastSyncTime: 1670577839.19733
+when: 1670579996.86954
+lastSyncTime: 1670579996.86955
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: raw data and pre processing/AnalisisECommerce.csv|raw data and pre processing/PreProcessing.Rmd

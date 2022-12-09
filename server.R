@@ -8,12 +8,12 @@ function(input, output, session){
   
   # Rendering the box header  
   output$head1 <- renderText(
-    paste("5 E-Commerce with high rate of", input$var2, "by UNAIR Stud")
+    paste("E-Commerce with high rate of", input$var2, "by UNAIR Stud")
   )
   
   # Rendering the box header 
   output$head2 <- renderText(
-    paste("5 E-Commerce with low rate of", input$var2, "by UNAIR Stud")
+    paste("E-Commerce with low rate of", input$var2, "by UNAIR Stud")
   )
   
   
